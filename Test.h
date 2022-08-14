@@ -86,10 +86,13 @@ void Test(){
     Matrix mat9(data9), mat10(data10),  res_cor9(data_cor9), res_cor10(data_cor10);
     Matrix res9 = mat9 * mat10;
     Matrix res10 = mat10 * mat9;
-    res9.printArray();
-    res10.printArray();
     assert(compareMatrices(res9, res_cor9) == true);
     assert(compareMatrices(res10, res_cor10) == true);
+
+    Matrix mat11(data2);
+    float f = -1.56;
+    Matrix mat12 = mat11.scalarMul(f);
+    mat12.printArray();
 
     std::cout << "Finished Testing" << std::endl;
 }
