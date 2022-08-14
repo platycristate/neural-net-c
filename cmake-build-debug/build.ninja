@@ -52,6 +52,7 @@ build cmake_object_order_depends_target_NeuralNet: phony || CMakeFiles/NeuralNet
 build CMakeFiles/NeuralNet.dir/main.cpp.o: CXX_COMPILER__NeuralNet_Debug /home/rcentea/CLionProjects/NeuralNet/main.cpp || cmake_object_order_depends_target_NeuralNet
   DEP_FILE = CMakeFiles/NeuralNet.dir/main.cpp.o.d
   FLAGS = -g -std=gnu++14
+  INCLUDES = -I/home/rcentea/CLionProjects/NeuralNet/matrix
   OBJECT_DIR = CMakeFiles/NeuralNet.dir
   OBJECT_FILE_DIR = CMakeFiles/NeuralNet.dir
 
