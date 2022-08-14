@@ -1,3 +1,0 @@
-/home/rcentea/CLionProjects/NeuralNet/cmake-build-debug/CMakeFiles/NeuralNet.dir
-/home/rcentea/CLionProjects/NeuralNet/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/rcentea/CLionProjects/NeuralNet/cmake-build-debug/CMakeFiles/rebuild_cache.dir
