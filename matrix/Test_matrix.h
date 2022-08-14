@@ -6,7 +6,7 @@
 #include <fstream>
 #include <sstream>
 #include <string>
-#include "Matrix.h"
+#include <Matrix.h>
 
 bool compareMatrices(const Matrix &a, const Matrix &b) {
     assert(a.n_rows == b.n_rows && a.n_cols == b.n_cols);
@@ -19,7 +19,7 @@ bool compareMatrices(const Matrix &a, const Matrix &b) {
 }
 
 void readData(){
-    std::ifstream file("../tests.txt");
+    std::ifstream file("../matrix/tests.txt");
     std::string line;
     // Read a file
     if (file.is_open()) {

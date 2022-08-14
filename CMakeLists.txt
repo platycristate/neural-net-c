@@ -3,6 +3,6 @@ project(NeuralNet)
 
 set(CMAKE_CXX_STANDARD 14)
 
-include_directories(matrix)
+include_directories(matrix neural_net)
 
-add_executable(${PROJECT_NAME} main.cpp matrix )
+add_executable(${PROJECT_NAME} main.cpp matrix neural_net)
