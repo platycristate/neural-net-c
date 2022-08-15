@@ -9,23 +9,13 @@ int main() {
     Matrix input(input_data);
 
     LinearLayer layer1(8, 2);
-    LinearLayer layer2(8, 8);
-    LinearLayer layer3(8, 8);
-    LinearLayer layer4(1, 8);
+    LinearLayer layer2(1, 8);
 
     Matrix x1 = layer1.forward(input);
-    Matrix x2 = ReLU(x1);
-    Matrix x3 = layer2.forward(x2);
-    Matrix x4 = ReLU(x3);
-    Matrix x5 = layer3.forward(x4);
-    Matrix x6 = ReLU(x5);
-    Matrix x7 = layer4.forward(x6);
+    Matrix x2 = layer2.forward(x1);
 
-    Matrix m = layer2.backward_wrt_weights(x2, x3);
-    m.shape();
-    m.printArray();
+    x1.shape();
+    x2.shape();
 
-    x7.shape();
-    x7.printArray();
     return 0;
 }

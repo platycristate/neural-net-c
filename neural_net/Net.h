@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <tuple>
 #include <vector>
 #include <random>
 #include <cassert>
@@ -37,20 +38,39 @@ Matrix ReLU_backward(const Matrix &output) {
     return grad;
 }
 
-
 struct LinearLayer {
     int n_neurons;
     int n_links;
     Matrix weight{1, 1};
+    Matrix input_vec{1, 1};
     Matrix grad{1, 1};
 
     LinearLayer(int n_neurons_, int n_links_) {
         n_neurons = n_neurons_;
         n_links = n_links_;
         weight.resize(n_neurons, n_links);
-        grad.resize(n_neurons, n_links);
+        input_vec.resize(n_links, 1);
         normal_initialization();
     }
+    Matrix forward(Matrix &input) {
+        input_vec = input;
+        assert(input.n_rows == weight.n_cols);
+        assert(input.n_cols == 1);
+        Matrix res = weight * input;
+        return res;
+    }
+    std::tuple<Matrix, Matrix> backward(Matrix &grad_output) const {
+        assert(grad_output.n_rows == 1 && grad_output.n_cols == weight.n_rows);
+        Matrix grad_output_input = grad_output * weight;
+        Matrix grad_output_weight(weight.n_rows, weight.n_cols);
+        for (int row=0; row < weight.n_rows; row++) {
+            for (int col=0; col < weight.n_cols; col++)
+                grad_output_weight.data[row][col] =
+                        input_vec.data[col][1] * grad_output.data[1][row];
+        }
+        return {grad_output_input, grad_output_weight};
+    }
+
     void normal_initialization() {
         double value;
         for (int i=0; i < n_neurons; i++) {
@@ -59,24 +79,6 @@ struct LinearLayer {
                 weight.data[i][j] = value;
             }
         }
-    }
-    Matrix forward(Matrix &input) {
-        assert(input.n_rows == weight.n_cols);
-        assert(input.n_cols == 1);
-        Matrix res = weight * input;
-        return res;
-    }
-    Matrix backward_wrt_weights(Matrix const &inputs, Matrix const &outputs) {
-        Matrix transposed_inputs = inputs.transpose();
-        Matrix grad_weights(weight.n_rows, weight.n_cols);
-        for (int row=0; row < weight.n_rows; row++) {
-            for (int col=0; col < weight.n_cols; col++)
-                grad_weights.data[row][col] = transposed_inputs.data[0][col];
-        }
-        return grad_weights;
-    }
-    Matrix backward_wrt_inputs() {
-        return weight;
     }
 };
 
