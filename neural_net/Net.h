@@ -30,6 +30,8 @@ struct LinearLayer {
     int n_neurons;
     int n_links;
     Matrix weight{1, 1};
+    Matrix grad{1, 1};
+    Matrix output{1, 1};
 
     LinearLayer(int n_neurons_, int n_links_) {
         n_neurons = n_neurons_;
@@ -51,6 +53,9 @@ struct LinearLayer {
         assert(input.n_cols == 1);
         Matrix res = weight * input;
         return res;
+    }
+    Matrix backward_wrt_inputs() {
+        return weight;
     }
 };
 
