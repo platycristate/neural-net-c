@@ -7,8 +7,21 @@ int main() {
     std::vector<std::vector<double>> data2 = {{1, 1, 1}, {1, 1, 1}, {1, 1, 1}};
     std::vector<std::vector<double>> input_data = {{4}, {-2}};
     Matrix input(input_data);
-    LinearLayer layer(3, 2);
-    Matrix res = layer.forward(input);
-    res.shape();
+
+    LinearLayer layer1(8, 2);
+    LinearLayer layer2(8, 8);
+    LinearLayer layer3(8, 8);
+    LinearLayer layer4(1, 8);
+
+    Matrix x1 = layer1.forward(input);
+    Matrix x2 = ReLU(x1);
+    Matrix x3 = layer2.forward(x2);
+    Matrix x4 = ReLU(x3);
+    Matrix x5 = layer3.forward(x4);
+    Matrix x6 = ReLU(x5);
+    Matrix x7 = layer4.forward(x6);
+
+    x7.shape();
+    x7.printArray();
     return 0;
 }
