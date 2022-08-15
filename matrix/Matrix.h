@@ -16,6 +16,16 @@ struct Matrix {
         n_rows = data.size();
         n_cols = data[0].size();
     }
+
+    Matrix( int n_rows_, int n_cols_, double value) {
+        vector<vector<double>> data_(
+                n_rows_,
+                vector<double> (n_cols_, value));
+        data = data_;
+        assert(n_rows_ == data.size() && n_cols_ == data[0].size());
+        n_rows = data.size();
+        n_cols = data[0].size();
+    }
     Matrix( int n_rows_, int n_cols_) {
         vector<vector<double>> data_(
                 n_rows_,
