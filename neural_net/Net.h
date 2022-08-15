@@ -14,29 +14,36 @@ double randDouble() {
     double number = distribution(generator);
     return number;
 }
-Matrix ReLU(const Matrix &m) {
-    Matrix res(m.n_rows, m.n_cols);
-    double value;
-    for (int i=0; i < m.n_rows; i++) {
-        for (int j=0; j < m.n_cols; j++) {
-            value = m.data[i][j];
-            if (value > 0)
-                res.data[i][j] = value;
-        }
-    }
-    return res;
-}
 
-Matrix ReLU_backward(const Matrix &output) {
-    Matrix grad(output.n_rows, output.n_cols);
-    for (int i = 0; i < output.n_rows; i++) {
-        for (int j = 0; j < output.n_cols; j++) {
-            if (output.data[i][j] > 0)
-                grad.data[i][j] = 1.0;
+struct ReLU {
+    static Matrix forward(const Matrix &input) {
+        Matrix output(input.n_rows, input.n_cols);
+        double value;
+        for (int i=0; i < input.n_rows; i++) {
+            for (int j=0; j < input.n_cols; j++) {
+                value = input.data[i][j];
+                if (value > 0)
+                    output.data[i][j] = value;
+            }
         }
+        return output;
     }
-    return grad;
-}
+
+    static std::tuple<Matrix> backward(Matrix const &grad_output, Matrix const &output){
+        Matrix grad_output_input(grad_output.n_rows,
+                                 grad_output.n_cols);
+        for (int row=0; row < grad_output.n_rows; row++) {
+            for (int col=0; col < grad_output.n_cols; col++) {
+                if (output.data[row][col] > 0.0) {
+                    grad_output_input.data[row][col] = 1.0;
+                } else {
+                    grad_output_input.data[row][col] = 0.0;
+                }
+            }
+        }
+        return {grad_output_input};
+    }
+};
 
 struct LinearLayer {
     int n_neurons;

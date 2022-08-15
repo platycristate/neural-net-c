@@ -13,6 +13,7 @@ int main() {
     LinearLayer layer2(1, 8);
 
     Matrix x1 = layer1.forward(input);
+    Matrix x1_act = ReLU::forward(x1);
     Matrix x2 = layer2.forward(x1);
 
     x1.shape();
@@ -20,11 +21,10 @@ int main() {
     Matrix grad_output(1, 1, 1);
     grad_output.shape();
     std::tuple<Matrix, Matrix> grads = layer2.backward(grad_output);
-    Matrix grad0 = std::get<0>(grads);
+    Matrix grad_output2 = std::get<0>(grads);
     Matrix grad1 = std::get<1>(grads);
-    grad0.shape();
-    grad1.shape();
-    grad0.printArray();
-    grad1.printArray();
+    std::tuple<Matrix> grads2 = ReLU::backward(grad_output2, x1_act);
+    Matrix grad_output3 = std::get<0>(grads2);
+    grad_output3.shape();
     return 0;
 }
