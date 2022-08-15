@@ -23,12 +23,12 @@ void readData(){
     std::string line;
     // Read a file
     if (file.is_open()) {
-        std::vector<std::vector<float>> array;
+        std::vector<std::vector<double>> array;
         while (file.good()) {
             std::getline(file, line);
             std::istringstream iss(line);
-            float element;
-            std::vector<float> row;
+            double element;
+            std::vector<double> row;
             while (iss.good()) {
                 iss >> element;
                 row.push_back(element);
@@ -43,9 +43,9 @@ void readData(){
 
 void Test(){
     std::cout << "Testing addition" << std::endl;
-    std::vector<std::vector<float>> data = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
-    std::vector<std::vector<float>> data2 = {{1, 1, 1}, {1, 1, 1}, {1, 1, 1}};
-    std::vector<std::vector<float>> data_cor = {{2, 3, 4}, {5, 6, 7}, {8, 9, 10}};
+    std::vector<std::vector<double>> data = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+    std::vector<std::vector<double>> data2 = {{1, 1, 1}, {1, 1, 1}, {1, 1, 1}};
+    std::vector<std::vector<double>> data_cor = {{2, 3, 4}, {5, 6, 7}, {8, 9, 10}};
     // Addition Test 1
     Matrix mat1(data), mat2(data2), res_cor(data_cor);
     Matrix res = mat1 + mat2;
@@ -58,31 +58,31 @@ void Test(){
     assert(compareMatrices(res, res_cor) == true);
 
     // Addition Test 3
-    std::vector<std::vector<float>> data4 = {{1}};
-    std::vector<std::vector<float>> data5 = {{3}};
-    std::vector<std::vector<float>> data_cor2 = {{4}};
+    std::vector<std::vector<double>> data4 = {{1}};
+    std::vector<std::vector<double>> data5 = {{3}};
+    std::vector<std::vector<double>> data_cor2 = {{4}};
     Matrix mat4(data4), mat5(data5), res_cor2(data_cor2);
     Matrix res2 = mat4 + mat5;
     assert(compareMatrices(res2, res_cor2) == true);
     std::cout << "Finished addition" << std::endl;
 
     std::cout << "Testing transpositions" << std::endl;
-    std::vector<std::vector<float>> data6 = {{1}};
+    std::vector<std::vector<double>> data6 = {{1}};
     Matrix mat6(data6);
     Matrix mat7 = mat6.transpose();
     assert(compareMatrices(mat7, mat6) == true);
 
-    std::vector<std::vector<float>> data8 = {{1, 2}};
-    std::vector<std::vector<float>> data_cor8 = {{1}, {2}};
+    std::vector<std::vector<double>> data8 = {{1, 2}};
+    std::vector<std::vector<double>> data_cor8 = {{1}, {2}};
     Matrix mat8(data8), res_cor8(data_cor8);
     Matrix res8 = mat8.transpose();
     assert(compareMatrices(res8, res_cor8) == true);
 
     // Multiplication tests
-    std::vector<std::vector<float>> data9 = {{1, -3}};
-    std::vector<std::vector<float>> data10 = {{4}, {2}};
-    std::vector<std::vector<float>> data_cor9 = {{-2}};
-    std::vector<std::vector<float>> data_cor10 = {{4, -12}, {2, -6}};
+    std::vector<std::vector<double>> data9 = {{1, -3}};
+    std::vector<std::vector<double>> data10 = {{4}, {2}};
+    std::vector<std::vector<double>> data_cor9 = {{-2}};
+    std::vector<std::vector<double>> data_cor10 = {{4, -12}, {2, -6}};
     Matrix mat9(data9), mat10(data10),  res_cor9(data_cor9), res_cor10(data_cor10);
     Matrix res9 = mat9 * mat10;
     Matrix res10 = mat10 * mat9;
@@ -90,7 +90,7 @@ void Test(){
     assert(compareMatrices(res10, res_cor10) == true);
 
     Matrix mat11(data2);
-    float f = -1.56;
+    double f = -1.56;
     Matrix mat12 = mat11.scalarMul(f);
     mat12.printArray();
 

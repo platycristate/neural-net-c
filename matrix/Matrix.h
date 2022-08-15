@@ -7,21 +7,30 @@
 using namespace std;
 
 struct Matrix {
-    vector<vector<float>> data;
+    vector<vector<double>> data;
     int n_rows;
     int n_cols;
 
-    Matrix( vector<vector<float>> data_) {
+    Matrix( vector<vector<double>> data_) {
         data = data_;
         n_rows = data.size();
         n_cols = data[0].size();
     }
     Matrix( int n_rows_, int n_cols_) {
-        vector<vector<float>> data_(
+        vector<vector<double>> data_(
                 n_rows_,
-                vector<float> (n_cols_, 0));
+                vector<double> (n_cols_, 0));
         data = data_;
         assert(n_rows_ == data.size() && n_cols_ == data[0].size());
+        n_rows = data.size();
+        n_cols = data[0].size();
+    }
+    void resize(int new_n_rows, int new_n_cols){
+        vector<vector<double>> data_(
+                new_n_rows,
+                vector<double> (new_n_cols, 0));
+        data = data_;
+        assert(new_n_rows == data.size() && new_n_cols == data[0].size());
         n_rows = data.size();
         n_cols = data[0].size();
     }
@@ -49,7 +58,7 @@ struct Matrix {
         Matrix res(n_rows, m.n_cols);
         for (int row=0; row < n_rows; row++){
             for (int col=0; col < m.n_cols; col++){
-                float val = 0;
+                double val = 0;
                 for (int i=0; i < n_cols; i++)
                     val += data[row][i] * m.data[i][col];
                 res.data[row][col] = val;
@@ -62,7 +71,7 @@ struct Matrix {
         return res;
     }
 
-    Matrix scalarMul(float const &f){
+    Matrix scalarMul(double const &f){
         Matrix res(this->n_rows, this->n_cols);
         for (int i=0; i<n_rows; i++){
             for (int j=0; j<n_cols; j++)
