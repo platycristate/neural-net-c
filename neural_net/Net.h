@@ -13,6 +13,19 @@ double randDouble() {
     double number = distribution(generator);
     return number;
 }
+Matrix ReLU(const Matrix &m) {
+    Matrix res(m.n_rows, m.n_cols);
+    double value;
+    for (int i=0; i < m.n_rows; i++) {
+        for (int j=0; j < m.n_cols; j++) {
+            value = m.data[i][j];
+            if (value > 0)
+                res.data[i][j] = value;
+        }
+    }
+    return res;
+}
+
 struct LinearLayer {
     int n_neurons;
     int n_links;
