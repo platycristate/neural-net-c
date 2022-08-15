@@ -9,6 +9,6 @@ int main() {
     Matrix input(input_data);
     LinearLayer layer(3, 2);
     Matrix res = layer.forward(input);
-    std::cout << '\n';
+    res.shape();
     return 0;
 }

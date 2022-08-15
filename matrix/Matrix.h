@@ -83,6 +83,10 @@ struct Matrix {
         Matrix res = this->mul(m);
         return res;
     }
+
+    Matrix shape() const {
+        cout << "(" << n_rows << ", " << n_cols << ")\n";
+    }
     Matrix transpose() const {
         Matrix res(n_cols, n_rows);
         for (int i=0; i < n_rows; i++){
