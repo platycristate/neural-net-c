@@ -7,7 +7,6 @@ int main() {
     std::vector<std::vector<double>> data2 = {{1, 1, 1}, {1, 1, 1}, {1, 1, 1}};
     //Test();
     Net net1(2, 3);
-    double number;
     LinearLayer layer(10, 5);
     layer.weight.printArray();
     std::cout << '\n';

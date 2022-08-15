@@ -10,6 +10,7 @@ std::normal_distribution<> distribution{0,1};
 
 double randDouble() {
     double number = distribution(generator);
+    return number;
 }
 struct LinearLayer {
     int n_neurons;
