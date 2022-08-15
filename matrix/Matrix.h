@@ -84,7 +84,16 @@ struct Matrix {
         return res;
     }
 
-    Matrix shape() const {
+    Matrix operator ^ (Matrix const &m) {
+        Matrix res(n_rows, n_cols);
+        for (int i=0; i < n_rows; i++) {
+            for (int j=0; j < n_cols; j++)
+                res.data[i][j] = data[i][j] * m.data[i][j];
+        }
+        return res;
+    }
+
+    void shape() const {
         cout << "(" << n_rows << ", " << n_cols << ")\n";
     }
     Matrix transpose() const {
