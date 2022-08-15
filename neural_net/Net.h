@@ -2,6 +2,7 @@
 #include <iostream>
 #include <vector>
 #include <random>
+#include <cassert>
 #include <Matrix.h>
 
 std::random_device rd{};
@@ -31,6 +32,12 @@ struct LinearLayer {
                 weight.data[i][j] = value;
             }
         }
+    }
+    Matrix forward(Matrix &input) {
+        assert(input.n_rows == weight.n_cols);
+        assert(input.n_cols == 1);
+        Matrix res = weight * input;
+        return res;
     }
 };
 
