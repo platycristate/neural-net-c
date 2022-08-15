@@ -1,6 +1,7 @@
 #include <Matrix.h>
 #include <Net.h>
 #include <vector>
+#include <tuple>
 
 int main() {
     std::vector<std::vector<double>> data = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
@@ -16,6 +17,9 @@ int main() {
 
     x1.shape();
     x2.shape();
+    Matrix grad_output(1, 1, 1);
+    grad_output.shape();
+    std::tuple<Matrix, Matrix> grads = layer2.backward(grad_output);
 
     return 0;
 }

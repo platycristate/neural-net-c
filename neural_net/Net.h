@@ -63,10 +63,12 @@ struct LinearLayer {
         assert(grad_output.n_rows == 1 && grad_output.n_cols == weight.n_rows);
         Matrix grad_output_input = grad_output * weight;
         Matrix grad_output_weight(weight.n_rows, weight.n_cols);
+        double grad_w_row_col;
         for (int row=0; row < weight.n_rows; row++) {
-            for (int col=0; col < weight.n_cols; col++)
-                grad_output_weight.data[row][col] =
-                        input_vec.data[col][1] * grad_output.data[1][row];
+            for (int col=0; col < weight.n_cols; col++) {
+                grad_w_row_col = input_vec.data[col][0] * grad_output.data[0][row];
+                grad_output_weight.data[row][col] = grad_w_row_col;
+            }
         }
         return {grad_output_input, grad_output_weight};
     }
