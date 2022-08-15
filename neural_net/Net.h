@@ -26,12 +26,23 @@ Matrix ReLU(const Matrix &m) {
     return res;
 }
 
+Matrix ReLU_backward(const Matrix &output) {
+    Matrix grad(output.n_rows, output.n_cols);
+    for (int i = 0; i < output.n_rows; i++) {
+        for (int j = 0; j < output.n_cols; j++) {
+            if (output.data[i][j] > 0)
+                grad.data[i][j] = 1.0;
+        }
+    }
+    return grad;
+}
+
+
 struct LinearLayer {
     int n_neurons;
     int n_links;
     Matrix weight{1, 1};
     Matrix grad{1, 1};
-    Matrix output{1, 1};
 
     LinearLayer(int n_neurons_, int n_links_) {
         n_neurons = n_neurons_;
