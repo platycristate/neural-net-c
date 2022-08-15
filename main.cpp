@@ -20,6 +20,11 @@ int main() {
     Matrix grad_output(1, 1, 1);
     grad_output.shape();
     std::tuple<Matrix, Matrix> grads = layer2.backward(grad_output);
-
+    Matrix grad0 = std::get<0>(grads);
+    Matrix grad1 = std::get<1>(grads);
+    grad0.shape();
+    grad1.shape();
+    grad0.printArray();
+    grad1.printArray();
     return 0;
 }
