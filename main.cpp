@@ -21,6 +21,10 @@ int main() {
     Matrix x6 = ReLU(x5);
     Matrix x7 = layer4.forward(x6);
 
+    Matrix m = layer2.backward_wrt_weights(x2, x3);
+    m.shape();
+    m.printArray();
+
     x7.shape();
     x7.printArray();
     return 0;

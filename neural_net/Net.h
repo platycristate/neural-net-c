@@ -48,6 +48,7 @@ struct LinearLayer {
         n_neurons = n_neurons_;
         n_links = n_links_;
         weight.resize(n_neurons, n_links);
+        grad.resize(n_neurons, n_links);
         normal_initialization();
     }
     void normal_initialization() {
@@ -64,6 +65,15 @@ struct LinearLayer {
         assert(input.n_cols == 1);
         Matrix res = weight * input;
         return res;
+    }
+    Matrix backward_wrt_weights(Matrix const &inputs, Matrix const &outputs) {
+        Matrix transposed_inputs = inputs.transpose();
+        Matrix grad_weights(weight.n_rows, weight.n_cols);
+        for (int row=0; row < weight.n_rows; row++) {
+            for (int col=0; col < weight.n_cols; col++)
+                grad_weights.data[row][col] = transposed_inputs.data[0][col];
+        }
+        return grad_weights;
     }
     Matrix backward_wrt_inputs() {
         return weight;
