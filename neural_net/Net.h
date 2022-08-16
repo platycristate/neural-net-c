@@ -10,10 +10,6 @@ std::random_device rd{};
 std::mt19937 generator{rd()};
 std::normal_distribution<> distribution{0,1};
 
-double randDouble() {
-    double number = distribution(generator);
-    return number;
-}
 
 struct ReLU {
     static Matrix forward(const Matrix &input) {
@@ -46,13 +42,13 @@ struct ReLU {
 };
 
 struct LinearLayer {
-    int n_neurons;
-    int n_links;
+    unsigned int n_neurons;
+    unsigned int n_links;
     Matrix weight{1, 1};
     Matrix input_vec{1, 1};
     Matrix grad{1, 1};
 
-    LinearLayer(int n_neurons_, int n_links_) {
+    LinearLayer(unsigned int n_neurons_, unsigned int n_links_) {
         n_neurons = n_neurons_;
         n_links = n_links_;
         weight.resize(n_neurons, n_links);
@@ -79,14 +75,13 @@ struct LinearLayer {
         }
         return {grad_output_input, grad_output_weight};
     }
-
     void normal_initialization() {
-        double value;
+        generator.seed(259);
         for (int i=0; i < n_neurons; i++) {
             for (int j=0; j < n_links; j++) {
-                value = randDouble();
-                weight.data[i][j] = value;
+                weight.data[i][j] = distribution(generator);
             }
         }
     }
+
 };
