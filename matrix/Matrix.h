@@ -90,12 +90,12 @@ struct Matrix {
         }
         return res;
     }
-    Matrix operator * const (Matrix const &m) {
+    Matrix operator * (Matrix const &m) {
         Matrix res = this->mul(m);
         return res;
     }
 
-    Matrix operator ^ const (Matrix const &m) {
+    Matrix operator ^ (Matrix const &m) {
         Matrix res(n_rows, n_cols);
         for (int i=0; i < n_rows; i++) {
             for (int j=0; j < n_cols; j++)
