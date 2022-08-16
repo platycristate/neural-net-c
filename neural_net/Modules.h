@@ -25,7 +25,7 @@ struct ReLU {
         return output;
     }
 
-    static std::tuple<Matrix> backward(Matrix const &grad_output, Matrix const &output) {
+    static Matrix backward(Matrix const &grad_output, Matrix const &output) {
         assert(output.n_rows == grad_output.n_cols && output.n_cols == 1 && grad_output.n_rows == 1);
         Matrix grad_output_input(grad_output.n_rows,
                                  grad_output.n_cols);
@@ -38,7 +38,7 @@ struct ReLU {
                 }
             }
         }
-        return {grad_output_input};
+        return grad_output_input;
     }
 };
 
@@ -48,7 +48,9 @@ struct LinearLayer {
     Matrix weight{1, 1};
     Matrix bias{1, 1};
     Matrix input_vec{1, 1};
-    Matrix grad{1, 1};
+    Matrix grad_weight{1, 1};
+    Matrix grad_bias{1, 1};
+    Matrix grad_input{1, 1};
 
     LinearLayer(unsigned int n_neurons_, unsigned int n_links_) {
         n_neurons = n_neurons_;
@@ -56,6 +58,9 @@ struct LinearLayer {
         weight.resize(n_neurons, n_links);
         input_vec.resize(n_links, 1);
         bias.resize(n_neurons, 1);
+        grad_weight.resize(n_neurons, n_links);
+        grad_bias.resize(n_neurons, 1);
+        grad_input.resize(1, n_links);
         normal_initialization();
     }
     Matrix forward(Matrix &input) {
@@ -66,7 +71,7 @@ struct LinearLayer {
         res = res + bias;
         return res;
     }
-    std::tuple<Matrix, Matrix, Matrix> backward(Matrix &grad_output) const {
+    void backward(Matrix &grad_output) {
         assert(grad_output.n_rows == 1 && grad_output.n_cols == weight.n_rows);
         Matrix grad_output_input = grad_output * weight;
         Matrix grad_output_weight(weight.n_rows, weight.n_cols);
@@ -79,10 +84,9 @@ struct LinearLayer {
                 grad_output_weight.data[row][col] = grad_w_row_col;
             }
         }
-        return {grad_output_input,
-                grad_output_weight,
-                grad_output_bias};
-
+        grad_weight = grad_output_weight;
+        grad_bias = grad_output_bias;
+        grad_input = grad_output_input;
     }
     void normal_initialization() {
         generator.seed(259);
