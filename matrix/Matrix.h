@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <utility>
 #include <vector>
 #include <cstring>
 #include <cassert>
@@ -8,11 +9,11 @@ using namespace std;
 
 struct Matrix {
     vector<vector<double>> data;
-    int n_rows;
-    int n_cols;
+    unsigned int n_rows;
+    unsigned int n_cols;
 
-    Matrix( vector<vector<double>> data_) {
-        data = data_;
+    explicit Matrix( vector<vector<double>> data_) {
+        data = std::move(data_);
         n_rows = data.size();
         n_cols = data[0].size();
     }
@@ -89,12 +90,12 @@ struct Matrix {
         }
         return res;
     }
-    Matrix operator * (Matrix const &m) {
+    Matrix operator * const (Matrix const &m) {
         Matrix res = this->mul(m);
         return res;
     }
 
-    Matrix operator ^ (Matrix const &m) {
+    Matrix operator ^ const (Matrix const &m) {
         Matrix res(n_rows, n_cols);
         for (int i=0; i < n_rows; i++) {
             for (int j=0; j < n_cols; j++)
