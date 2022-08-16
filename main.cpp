@@ -16,15 +16,19 @@ int main() {
     Matrix x1_act = ReLU::forward(x1);
     Matrix x2 = layer2.forward(x1);
 
-    x1.shape();
-    x2.shape();
+    // Initialize
     Matrix grad_output(1, 1, 1);
-    grad_output.shape();
+
     std::tuple<Matrix, Matrix> grads = layer2.backward(grad_output);
     Matrix grad_output2 = std::get<0>(grads);
-    Matrix grad1 = std::get<1>(grads);
-    std::tuple<Matrix> grads2 = ReLU::backward(grad_output2, x1_act);
+    std::cout << "grad_output2:\n";
+    grad_output2.shape();
+    grad_output2.printArray();
+
+    std::tuple<Matrix> grads2 = ReLU::backward(grad_output2, x2);
     Matrix grad_output3 = std::get<0>(grads2);
+    std::cout << "grad_output3:\n";
     grad_output3.shape();
+    grad_output3.printArray();
     return 0;
 }

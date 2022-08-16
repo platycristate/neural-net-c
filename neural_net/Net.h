@@ -29,13 +29,13 @@ struct ReLU {
         return output;
     }
 
-    static std::tuple<Matrix> backward(Matrix const &grad_output, Matrix const &output){
+    static std::tuple<Matrix> backward(Matrix const &grad_output, Matrix const &output) {
         Matrix grad_output_input(grad_output.n_rows,
                                  grad_output.n_cols);
         for (int row=0; row < grad_output.n_rows; row++) {
             for (int col=0; col < grad_output.n_cols; col++) {
                 if (output.data[row][col] > 0.0) {
-                    grad_output_input.data[row][col] = 1.0;
+                    grad_output_input.data[row][col] = 1.0 * grad_output.data[0][col];
                 } else {
                     grad_output_input.data[row][col] = 0.0;
                 }
