@@ -17,11 +17,12 @@ int main() {
     Matrix pred = net.forward(input);
     Matrix prob = Sigmoid::forward(pred);
     Matrix loss = CrossEntropyLoss::forward(prob, target);
-    loss.printArray();
 
     // Backward part
     Matrix grad_output = CrossEntropyLoss::backward(prob, target, loss);
     grad_output = Sigmoid::backward(grad_output, prob);
     net.backward(grad_output);
+
+    net.layers[0].grad_bias.printArray();
     return 0;
 }
