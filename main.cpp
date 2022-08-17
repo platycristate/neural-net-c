@@ -15,16 +15,13 @@ int main() {
 
     // Forward part
     Matrix pred = net.forward(input);
-    pred = ReLU::forward(pred);
+    Matrix prob = Sigmoid::forward(pred);
+    Matrix loss = CrossEntropyLoss::forward(prob, target);
+    loss.printArray();
 
     // Backward part
-    Matrix loss = CrossEntropyLoss::forward(pred, target);
-    Matrix grad_output = CrossEntropyLoss::backward(pred, target, loss);
-    grad_output.printArray();
-    grad_output.shape();
-    grad_output = ReLU::backward(grad_output, pred);
+    Matrix grad_output = CrossEntropyLoss::backward(prob, target, loss);
+    grad_output = Sigmoid::backward(grad_output, prob);
     net.backward(grad_output);
-    net.layers[1].weight.printArray();
-    net.layers[1].weight.shape();
     return 0;
 }

@@ -10,8 +10,8 @@ struct Network {
     std::vector<std::vector<int>> dims;
     explicit Network(std::vector<std::vector<int>> &dims_) {
         dims = dims_;
-        for (int i=0; i < dims.size(); i++) {
-            LinearLayer l(dims[i][0], dims[i][1]);
+        for (auto & dim : dims) {
+            LinearLayer l(dim[0], dim[1]);
             layers.push_back(l);
         }
     }
@@ -29,7 +29,7 @@ struct Network {
         return x;
     }
     void backward(Matrix &grad_output) {
-        for (int l=dims.size()-1; l >= 1; l--) {
+        for (unsigned int l=dims.size()-1; l >= 1; l--) {
             layers[l].backward(grad_output);
             grad_output = layers[l].grad_input;
             grad_output = ReLU::backward(grad_output, layers[l].input_vec);
