@@ -9,7 +9,7 @@
 
 std::random_device rd{};
 std::mt19937 generator{rd()};
-std::uniform_real_distribution<> distribution{-0.1, 0.1};
+std::uniform_real_distribution<> distribution{-0.5, 0.5};
 
 struct SoftMax {
     static Matrix forward(const Matrix &input) {
