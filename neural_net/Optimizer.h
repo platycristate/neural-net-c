@@ -12,10 +12,8 @@ struct Optimizer {
         learning_rate = lr;
         LinearLayer * layer_ptr;
         unsigned int n_layers = net.dims.size();
-        std::cout << n_layers << std::endl;
         for (int i=0; i < n_layers; i++) {
             layer_ptr = &(net.layers[i]);
-            std::cout << "layer " << i << ": "<< layer_ptr << std::endl;
             layer_ptrs.push_back(layer_ptr);
         }
     }
@@ -28,6 +26,5 @@ struct Optimizer {
             layer_ptr->bias = layer_ptr->bias - change;
         }
     }
-
 
 };
