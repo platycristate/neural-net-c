@@ -18,7 +18,7 @@ struct Matrix {
         n_cols = data[0].size();
     }
 
-    Matrix( int n_rows_, int n_cols_, double value) {
+    Matrix( unsigned int n_rows_, unsigned int n_cols_, double value) {
         vector<vector<double>> data_(
                 n_rows_,
                 vector<double> (n_cols_, value));
@@ -27,7 +27,7 @@ struct Matrix {
         n_rows = data.size();
         n_cols = data[0].size();
     }
-    Matrix( int n_rows_, int n_cols_) {
+    Matrix( unsigned int n_rows_, unsigned int n_cols_) {
         vector<vector<double>> data_(
                 n_rows_,
                 vector<double> (n_cols_, 0));
@@ -36,7 +36,7 @@ struct Matrix {
         n_rows = data.size();
         n_cols = data[0].size();
     }
-    void resize(int new_n_rows, int new_n_cols){
+    void resize(unsigned int new_n_rows, unsigned int new_n_cols){
         vector<vector<double>> data_(
                 new_n_rows,
                 vector<double> (new_n_cols, 0));
