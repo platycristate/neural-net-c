@@ -15,17 +15,20 @@ std::tuple<std::vector<std::vector<double>>, std::vector<unsigned int>> load_dat
     double num;
     unsigned int label;
 
-    for (int i=0; i < 5000; i++){
+    for (int i=0; i < 1000; i++){
         std::getline(file, line);
         stringstream str_stream(line);
         str_stream >> label;
         std::vector<double> data_example;
         labels.push_back(label);
+        int j=0;
         while (str_stream.good()){
             str_stream >> num;
             num /= 255;
             data_example.push_back(num);
+            j++;
         }
+
         data.push_back(data_example);
     }
     file.close();
@@ -45,3 +48,14 @@ Matrix one_hot(unsigned int label) {
     output.data[label][0] = 1;
     return output;
 }
+
+int extract_label(Matrix const &prob) {
+    int label=0;
+    for (int i=1; i < prob.n_rows; i++) {
+        if (prob.data[i] > prob.data[label])
+            label = i;
+    }
+    return label;
+}
+
+

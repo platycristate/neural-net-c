@@ -3,9 +3,9 @@ project(NeuralNet)
 
 set(CMAKE_CXX_STANDARD 14)
 
-include_directories(matrix neural_net)
+include_directories(matrix neural_net dataset)
 
 add_executable(${PROJECT_NAME}
-        main.cpp matrix
-        neural_net neural_net/Network.h
-        neural_net/Optimizer.h neural_net/Load_data.h)
+                main.cpp matrix
+                neural_net neural_net/Network.h
+                neural_net/Optimizer.h dataset/Load_data.h)
