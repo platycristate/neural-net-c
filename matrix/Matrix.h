@@ -54,7 +54,7 @@ struct Matrix {
         }
     }
 
-    Matrix add(Matrix &m) const {
+    Matrix add(Matrix m) const {
         assert(n_rows == m.n_rows && n_cols == m.n_cols);
         Matrix res(n_rows, n_cols);
         for (int i=0; i < n_rows; i++){
@@ -79,6 +79,10 @@ struct Matrix {
     }
     Matrix operator + (Matrix &m) const {
         Matrix res = this->add(m);
+        return res;
+    }
+    Matrix operator - (Matrix &m) const {
+        Matrix res = this->add(m.scalarMul(-1));
         return res;
     }
 

@@ -2,6 +2,7 @@
 #include <vector>
 #include <Network.h>
 #include <Loss_functions.h>
+#include <Optimizer.h>
 
 int main() {
     std::vector<std::vector<double>> input_data = {{4}, {-2}};
@@ -12,6 +13,7 @@ int main() {
     Matrix target(target_data);
     target = target.transpose();
     Network net(dims);
+    Optimizer opt(net, 5e-4);
 
     // Forward part
     Matrix pred = net.forward(input);
@@ -23,6 +25,11 @@ int main() {
     grad_output = Sigmoid::backward(grad_output, prob);
     net.backward(grad_output);
 
-    net.layers[0].grad_bias.printArray();
+    net.layers[0].weight.printArray();
+    opt.gradient_step();
+    std::cout << '\n';
+    net.layers[0].weight.printArray();
+    std::cout << '\n';
+    net.layers[0].grad_weight.printArray();
     return 0;
 }
