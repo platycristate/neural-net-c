@@ -77,7 +77,7 @@ struct Matrix {
         }
         return res;
     }
-    Matrix operator + (Matrix &m) {
+    Matrix operator + (Matrix &m) const {
         Matrix res = this->add(m);
         return res;
     }
@@ -90,7 +90,7 @@ struct Matrix {
         }
         return res;
     }
-    Matrix operator * (Matrix const &m) {
+    Matrix operator * (Matrix const &m) const {
         Matrix res = this->mul(m);
         return res;
     }
