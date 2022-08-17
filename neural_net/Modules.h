@@ -4,13 +4,33 @@
 #include <vector>
 #include <random>
 #include <cassert>
+#include <cmath>
 #include <Matrix.h>
 
 std::random_device rd{};
 std::mt19937 generator{rd()};
-std::normal_distribution<> distribution{0,1};
+std::uniform_real_distribution<> distribution{-0.1, 0.1};
 
-
+struct SoftMax {
+    static Matrix forward(const Matrix &input) {
+        Matrix output(input.n_rows, input.n_cols);
+        double value;
+        double denominator = 0.0;
+        for (int row=0; row < input.n_rows; row++) {
+            for (int col=0; col < input.n_cols; col++) {
+                value = std::exp(input.data[row][col]);
+                output.data[row][col] = value;
+                denominator += value;
+            }
+        }
+        for (int row=0; row < input.n_rows; row++) {
+            for (int col=0; col < input.n_cols; col++) {
+                output.data[row][col] /= denominator;
+            }
+        }
+        return output;
+    }
+};
 struct ReLU {
     static Matrix forward(const Matrix &input) {
         Matrix output(input.n_rows, input.n_cols);
@@ -31,8 +51,8 @@ struct ReLU {
                                  grad_output.n_cols);
         for (int row=0; row < grad_output.n_rows; row++) {
             for (int col=0; col < grad_output.n_cols; col++) {
-                if (output.data[col][0] > 0.0) {
-                    grad_output_input.data[row][col] = 1.0 * grad_output.data[0][col];
+                if (output.data[col][row] > 0.0) {
+                    grad_output_input.data[row][col] = 1.0 * grad_output.data[row][col];
                 } else {
                     grad_output_input.data[row][col] = 0.0;
                 }
