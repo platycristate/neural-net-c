@@ -15,7 +15,7 @@ struct SoftMax {
     static Matrix forward(const Matrix &input) {
         Matrix output(input.n_rows, input.n_cols);
         double value;
-        double denominator = 0.0;
+        double denominator;
         for (int row=0; row < input.n_rows; row++) {
             for (int col=0; col < input.n_cols; col++) {
                 value = std::exp(input.data[row][col]);
@@ -30,6 +30,36 @@ struct SoftMax {
         }
         return output;
     }
+};
+
+struct Sigmoid {
+    static Matrix forward(const Matrix &input) {
+        Matrix output(input.n_rows, input.n_cols);
+        double value;
+        for (int row=0; row < input.n_rows; row++) {
+            for (int col=0; col < input.n_cols; col++) {
+                value = 1 / (1 + std::exp(-input.data[row][col]));
+                output.data[row][col] = value;
+            }
+        }
+        return output;
+    }
+
+    static Matrix backward(const Matrix &grad_output, const Matrix &output) {
+        assert(output.n_rows == grad_output.n_cols && output.n_cols == 1 && grad_output.n_rows == 1);
+        Matrix grad_output_input(grad_output.n_rows,
+                                 grad_output.n_cols);
+        double value;
+        Matrix output_t = output.transpose();
+        for (int row = 0; row < grad_output.n_rows; row++) {
+            for (int col = 0; col < grad_output.n_cols; col++) {
+                value = grad_output.data[row][col] * output_t.data[row][col] * (1 - output_t.data[row][col]);
+                grad_output_input.data[row][col] = value;
+            }
+        }
+        return grad_output_input;
+    }
+
 };
 struct ReLU {
     static Matrix forward(const Matrix &input) {
