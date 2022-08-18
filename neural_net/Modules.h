@@ -9,16 +9,27 @@
 
 std::random_device rd{};
 std::mt19937 generator{rd()};
-std::uniform_real_distribution<> distribution{-0.05, 0.05};
+std::uniform_real_distribution<> distribution{-0.1, 0.1};
 
+
+double max(Matrix const &input) {
+    double max_el = input.data[0][0];
+    for (int row=0; row < input.n_rows; row++) {
+        if (input.data[row][0] > max_el)
+            max_el = input.data[row][0];
+    }
+    return max_el;
+}
 struct SoftMax {
     static Matrix forward(const Matrix &input) {
         Matrix output(input.n_rows, input.n_cols);
         double value;
-        double denominator;
+        double denominator, x;
+        double max_el = max(input);
         for (int row=0; row < input.n_rows; row++) {
             for (int col=0; col < input.n_cols; col++) {
-                value = std::exp(input.data[row][col]);
+                x = input.data[row][col] - max_el;
+                value = std::exp(x);
                 output.data[row][col] = value;
                 denominator += value;
             }
@@ -29,6 +40,19 @@ struct SoftMax {
             }
         }
         return output;
+    }
+    static Matrix backward(const Matrix &grad_output, const Matrix &output) {
+        assert(output.n_rows == grad_output.n_cols && output.n_cols == 1 && grad_output.n_rows == 1);
+        Matrix grad_output_input(grad_output.n_rows,
+                                 grad_output.n_cols);
+        double value;
+        for (int row=0; row < grad_output.n_rows; row++) {
+            for (int col=0; col < grad_output.n_cols; col++) {
+                value = output.data[row][col] * (1 - output.data[row][col]);
+                grad_output_input.data[row][col] = value;
+            }
+        }
+        return grad_output_input;
     }
 };
 

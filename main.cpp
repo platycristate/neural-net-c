@@ -14,17 +14,15 @@ int training_step(Network &net,
 
     // Forward part
     Matrix pred = net.forward(input);
-    Matrix prob = ReLU::forward(pred);
-    Matrix loss = CrossEntropyLoss::forward(prob, target);
+    Matrix loss = CrossEntropyLoss::forward(pred, target);
 
     // Backward part
-    Matrix grad_output = CrossEntropyLoss::backward(prob, target, loss);
-    grad_output = ReLU::backward(grad_output, prob);
+    Matrix grad_output = CrossEntropyLoss::backward(pred, target, loss);
     net.backward(grad_output);
 
     // Gradient descent
     opt.gradient_step();
-    int predicted_label = extract_label(prob);
+    int predicted_label = extract_label(pred);
     return predicted_label;
 }
 
@@ -32,6 +30,7 @@ int main() {
 
     std::random_device rd2;
     std::mt19937 g(rd2());
+    g.seed(2895);
     tuple<std::vector<std::vector<double>>, std::vector<unsigned int>> training_data;
     training_data = load_data();
     std::vector<std::vector<double>> inputs = std::get<0>(training_data);
@@ -62,7 +61,6 @@ int main() {
             if (pred_label == target_label)
                 correctly_classified += 1;
         }
-//        net.layers[3].grad_weight.printArray();
         std::cout << "Epoch " << epoch << ": ";
         std::cout << correctly_classified / num_of_examples << std::endl;
 
