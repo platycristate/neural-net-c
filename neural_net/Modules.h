@@ -9,8 +9,7 @@
 
 std::random_device rd{};
 std::mt19937 generator{rd()};
-std::uniform_real_distribution<> distribution{-0.1, 0.1};
-
+std::normal_distribution<> distribution{0, 1.};
 
 double max(Matrix const &input) {
     double max_el = input.data[0][0];
@@ -45,14 +44,22 @@ struct SoftMax {
         assert(output.n_rows == grad_output.n_cols && output.n_cols == 1 && grad_output.n_rows == 1);
         Matrix grad_output_input(grad_output.n_rows,
                                  grad_output.n_cols);
-        double value;
-        for (int row=0; row < grad_output.n_rows; row++) {
-            for (int col=0; col < grad_output.n_cols; col++) {
-                value = output.data[row][col] * (1 - output.data[row][col]);
-                grad_output_input.data[row][col] = value;
+        int n_elements = grad_output.n_cols;
+        Matrix D(grad_output.n_cols, grad_output.n_cols, 0);
+        for (int row=0; row < n_elements; row++) {
+            for (int col=0; col < n_elements; col++) {
+                if (row == col) {
+                    D.data[row][col] =
+                            output.data[col][0] * (1 - output.data[col][0]);
+                } else {
+                    D.data[row][col] =
+                           -output.data[row][0] * output.data[col][0];
+                }
             }
+            grad_output_input = grad_output * D;
         }
         return grad_output_input;
+
     }
 };
 

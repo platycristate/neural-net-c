@@ -38,7 +38,7 @@ int main() {
 
     uniform_int_distribution<int> uni(0, labels.size()-1);
 
-    int n_epochs = 400;
+    int n_epochs = 40;
     // Initialisation
     std::vector<std::vector<int>> dims = {{32,  784},
                                           {32, 32},

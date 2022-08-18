@@ -55,7 +55,7 @@ struct Matrix {
     }
 
     Matrix add(Matrix m) const {
-        assert(n_rows == m.n_rows && n_cols == m.n_cols);
+//        assert(n_rows == m.n_rows && n_cols == m.n_cols);
         Matrix res(n_rows, n_cols);
         for (int i=0; i < n_rows; i++){
             for (int j=0; j < n_cols; j++)
@@ -65,11 +65,12 @@ struct Matrix {
     }
 
     Matrix mul(Matrix const &m) const {
-        assert(n_cols == m.n_rows);
+//        assert(n_cols == m.n_rows);
         Matrix res(n_rows, m.n_cols);
+        double val = 0;
         for (int row=0; row < n_rows; row++){
             for (int col=0; col < m.n_cols; col++){
-                double val = 0;
+                val = 0;
                 for (int i=0; i < n_cols; i++)
                     val += data[row][i] * m.data[i][col];
                 res.data[row][col] = val;
