@@ -31,14 +31,16 @@ int main() {
     std::random_device rd2;
     std::mt19937 g(rd2());
     g.seed(2895);
+
     tuple<std::vector<std::vector<double>>, std::vector<unsigned int>> training_data;
     training_data = load_data();
-    std::vector<std::vector<double>> inputs = std::get<0>(training_data);
-    std::vector<unsigned int> labels = std::get<1>(training_data);
+    std::vector<std::vector<double>> raw_inputs = std::get<0>(training_data);
+    std::vector<unsigned int> raw_labels = std::get<1>(training_data);
+    uniform_int_distribution<int> uni(0, raw_labels.size()-1);
 
-    uniform_int_distribution<int> uni(0, labels.size()-1);
+    std::vector<Matrix> inputs = preprocess_data(raw_inputs);
+    std::vector<Matrix> targets = preprocess_labels(raw_labels);
 
-    int n_epochs = 40;
     // Initialisation
     std::vector<std::vector<int>> dims = {{32,  784},
                                           {32, 32},
@@ -47,16 +49,18 @@ int main() {
     Optimizer opt(net, 1e-4);
     Matrix input{1, 1};
     Matrix target{1, 1};
-    double num_of_examples = labels.size();
+    double num_of_examples = raw_labels.size();
     int target_label, index;
 
+
+    int n_epochs = 20;
     for (int epoch=0; epoch < n_epochs; epoch++) {
         double correctly_classified = 0;
         for (int step=1; step < num_of_examples; step++) {
             index = uni(g);
-            target_label = labels[index];
-            input = prepare_input(inputs[index]);
-            target = one_hot(target_label);
+            target_label = raw_labels[index];
+            input = inputs[index];
+            target = targets[index];
             int pred_label = training_step(net, opt, input, target);
             if (pred_label == target_label)
                 correctly_classified += 1;
