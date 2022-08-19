@@ -2,12 +2,10 @@
 #include <iostream>
 #include <vector>
 #include <tuple>
-//#include <Modules.h>
-//#include <Matrix_c.h>
-//#include <Matrix.h>
+#include <Modules.h>
+#include <Matrix_c.h>
 
 struct Network {
-//    std::vector<LinearLayer> layers;
     std::vector<std::vector<int>> dims;
     LinearLayer * layers;
     explicit Network(std::vector<std::vector<int>> &dims_) {

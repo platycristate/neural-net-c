@@ -1,33 +1,34 @@
 #pragma once
 #include <cassert>
 #include <cmath>
-#include <Matrix.h>
+//#include <Matrix.h>
+#include <Matrix_c.h>
 #include <Modules.h>
 
 struct CrossEntropyLoss {
-    static Matrix forward(Matrix &pred, Matrix &target ) {
+    static matrix forward(matrix &pred, matrix &target ) {
         assert(target.n_rows == pred.n_rows);
         double result = 0;
         double value;
-        Matrix sm_activated = SoftMax::forward(pred);
+        matrix sm_activated = SoftMax::forward(pred);
         for (int i=0; i < pred.n_rows; i++) {
-            value = target.data[i][0] * log(sm_activated.data[i][0]);
+            value = target.get(i, 0) * log(sm_activated.get(i, 0));
             result -= value;
         }
-        return Matrix{1, 1, result};
+        return matrix{1, 1, result};
     }
-    static Matrix backward(
-            Matrix &pred,
-            Matrix &target,
-            Matrix &output) {
-        Matrix grad_output_input(pred.n_rows, pred.n_cols, 0);
-        Matrix sm_activated = SoftMax::forward(pred);
+    static matrix backward(
+            matrix &pred,
+            matrix &target,
+            matrix &output) {
+        matrix grad_output_input(pred.n_rows, pred.n_cols, 0);
+        matrix sm_activated = SoftMax::forward(pred);
         for (int row=0; row < pred.n_rows; row++)
-            grad_output_input.data[row][0] = -target.data[row][0] * (1 / sm_activated.data[row][0] + 1e-8);
+            *grad_output_input.get_ptr(row,0) = -target.get(row, 0) * (1 / sm_activated.get(row,0) + 1e-8);
 
-        Matrix sm_grad = SoftMax::backward(
+        matrix sm_grad = SoftMax::backward(
                 grad_output_input.transpose(),
-                    sm_activated).transpose();
+                sm_activated).transpose();
         return sm_grad.transpose();
     }
 };

@@ -6,7 +6,7 @@
 #include <cassert>
 #include <cmath>
 //#include <Matrix.h>
-//#include <Matrix_c.h>
+#include <Matrix_c.h>
 
 std::random_device rd{};
 std::mt19937 generator{rd()};
