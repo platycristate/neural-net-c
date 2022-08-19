@@ -3,19 +3,19 @@
 #include <cassert>
 
 
-struct Matrix {
+struct matrix {
     double * data;
     unsigned int n_rows;
     unsigned int n_cols;
 
-    Matrix(double * data_,
+    matrix(double * data_,
            unsigned int n_rows_,
            unsigned int n_cols_) {
         data = data_;
         n_rows = n_rows_;
         n_cols = n_cols_;
     }
-    Matrix (unsigned int n_rows_, unsigned int n_cols_,
+    matrix (unsigned int n_rows_, unsigned int n_cols_,
             double value) {
         n_rows = n_rows_;
         n_cols = n_cols_;
@@ -25,7 +25,7 @@ struct Matrix {
                 *(data + row*n_cols + col) = value;
         }
     }
-    Matrix operator * (Matrix const &mat) {
+    matrix operator * (matrix const &mat) {
         assert(n_cols == mat.n_rows);
         double * out = (double *) malloc(sizeof(double) * n_rows * mat.n_cols);
         for (int row=0; row < n_rows; row++) {
@@ -37,29 +37,29 @@ struct Matrix {
                 *(out + row*mat.n_cols + col) = value;
             }
         }
-        Matrix out_mat(out, n_rows, mat.n_cols);
+        matrix out_mat(out, n_rows, mat.n_cols);
         return out_mat;
     }
-    Matrix scalarMul(double const f) const {
+    matrix scalarMul(double const f) const {
         double * out = (double *) malloc(sizeof(double) * n_rows * n_cols);
         for (int row=0; row < n_rows; row++) {
             for (int col=0; col < n_cols; col++)
                 *(out + row*n_cols + col) = f * *(data + row*n_cols + col);
         }
-        Matrix out_mat(out, n_rows, n_cols);
+        matrix out_mat(out, n_rows, n_cols);
         return out_mat;
     }
-    Matrix operator ^ (Matrix const &mat) {
+    matrix operator ^ (matrix const &mat) {
         assert(n_rows == mat.n_rows && n_cols == mat.n_cols);
         double * out = (double *) malloc(sizeof(double) * n_rows * n_cols);
         for (int row=0; row < n_rows; row++) {
             for (int col=0; col < n_cols; col++)
                 *(out + row*n_cols + col) = *(data + row*n_cols + col) * *(mat.data + row*n_cols + col);
         }
-        Matrix out_mat(out, n_rows, n_cols);
+        matrix out_mat(out, n_rows, n_cols);
         return out_mat;
     }
-    Matrix operator + (Matrix const &mat) {
+    matrix operator + (matrix const &mat) {
         assert(mat.n_cols == n_cols && mat.n_rows == n_rows);
         double * out = (double *) malloc(sizeof(double) * n_rows * n_cols);
         for (int row=0; row < n_rows; row++) {
@@ -67,10 +67,18 @@ struct Matrix {
                 *(out + row*n_cols + col) =
                 *(data + row*n_cols + col) + *(mat.data + row*n_cols + col);
         }
-        static Matrix out_mat(out, n_rows, n_cols);
+        static matrix out_mat(out, n_rows, n_cols);
         return out_mat;
     }
-    Matrix transpose() {
+    double get(int const i, int const j) const {
+        assert(i < n_rows && j < n_cols);
+        return *(data + n_cols*i + j);
+    }
+    double * get_ptr(int const i, int const j) const {
+        assert(i < n_rows && j < n_cols);
+        return data + n_cols*i + j;
+    }
+    matrix transpose() {
         double * out = (double *) malloc(sizeof(double) * n_rows * n_cols);
         for (int row=0; row < n_rows; row++) {
             for (int col=0; col < n_cols; col++) {
@@ -78,7 +86,7 @@ struct Matrix {
                 *(out + col*n_rows + row) = *(data + row*n_cols + col);
             }
         }
-        Matrix out_mat(out, n_cols, n_rows);
+        matrix out_mat(out, n_cols, n_rows);
         return out_mat;
     }
 
