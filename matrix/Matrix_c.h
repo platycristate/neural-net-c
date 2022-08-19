@@ -15,6 +15,11 @@ struct matrix {
         n_rows = n_rows_;
         n_cols = n_cols_;
     }
+    matrix (unsigned int n_rows_, unsigned int n_cols_) {
+        n_rows = n_rows_;
+        n_cols = n_cols_;
+        data = (double*)malloc(sizeof(double) * n_rows * n_cols);
+    }
     matrix (unsigned int n_rows_, unsigned int n_cols_,
             double value) {
         n_rows = n_rows_;
@@ -25,7 +30,7 @@ struct matrix {
                 *(data + row*n_cols + col) = value;
         }
     }
-    matrix operator * (matrix const &mat) {
+    matrix operator * (matrix const &mat) const {
         assert(n_cols == mat.n_rows);
         double * out = (double *) malloc(sizeof(double) * n_rows * mat.n_cols);
         for (int row=0; row < n_rows; row++) {
@@ -49,7 +54,7 @@ struct matrix {
         matrix out_mat(out, n_rows, n_cols);
         return out_mat;
     }
-    matrix operator ^ (matrix const &mat) {
+    matrix operator ^ (matrix const &mat) const {
         assert(n_rows == mat.n_rows && n_cols == mat.n_cols);
         double * out = (double *) malloc(sizeof(double) * n_rows * n_cols);
         for (int row=0; row < n_rows; row++) {
@@ -59,7 +64,7 @@ struct matrix {
         matrix out_mat(out, n_rows, n_cols);
         return out_mat;
     }
-    matrix operator + (matrix const &mat) {
+    matrix operator + (matrix const &mat) const {
         assert(mat.n_cols == n_cols && mat.n_rows == n_rows);
         double * out = (double *) malloc(sizeof(double) * n_rows * n_cols);
         for (int row=0; row < n_rows; row++) {
@@ -78,7 +83,7 @@ struct matrix {
         assert(i < n_rows && j < n_cols);
         return data + n_cols*i + j;
     }
-    matrix transpose() {
+    matrix transpose() const {
         double * out = (double *) malloc(sizeof(double) * n_rows * n_cols);
         for (int row=0; row < n_rows; row++) {
             for (int col=0; col < n_cols; col++) {
@@ -88,6 +93,11 @@ struct matrix {
         }
         matrix out_mat(out, n_cols, n_rows);
         return out_mat;
+    }
+    void resize(int n_rows_, unsigned int n_cols_) {
+        data = (double *) malloc(sizeof(double) * n_rows_ * n_cols_);
+        n_rows = n_rows_;
+        n_cols = n_cols_;
     }
 
     void print() const {
