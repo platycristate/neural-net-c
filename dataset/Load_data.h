@@ -13,29 +13,29 @@ matrix one_hot(unsigned int label) {
     return output;
 }
 
-std::tuple<matrix *, matrix *, unsigned int *> load_data() {
+std::tuple<matrix *, matrix *, unsigned int *> load_data(unsigned int n_elements) {
     std::fstream file;
     file.open("../data/mnist_train.csv");
     std::string line;
-    double data[1000][784];
-    unsigned int labels[1000];
+    double * data = (double *) calloc(n_elements * 784, sizeof(double));
+    unsigned int * labels = (unsigned int *) calloc(n_elements , sizeof(unsigned int));
     std::getline(file, line);
     double num;
     unsigned int label;
-    matrix * inputs = (matrix *) calloc( 1000, sizeof(matrix));
-    matrix * targets = (matrix *) calloc(1000, sizeof(matrix));
-    for (int i=0; i < 1000; i++) {
+    matrix * inputs = (matrix *) calloc( n_elements, sizeof(matrix));
+    matrix * targets = (matrix *) calloc(n_elements, sizeof(matrix));
+    for (int i=0; i < n_elements; i++) {
         std::getline(file, line);
         std::stringstream str_stream(line);
         str_stream >> label;
-        labels[i] = label;
+        *(labels + i) = label;
         int j=0;
         while (str_stream.good()){
             str_stream >> num;
-            data[i][j] = num / 255;
+            *(data + i*784 + j) = num / 255;
             j++;
         }
-        matrix x = matrix(data[i], 784, 1);
+        matrix x = matrix(data + i*784, 784, 1);
         *(inputs + i) = x;
         *(targets + i) = one_hot(label);
     }

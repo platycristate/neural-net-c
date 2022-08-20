@@ -79,7 +79,6 @@ struct matrix {
         assert(mat.n_cols == n_cols && mat.n_rows == n_rows);
         matrix neg_mat = mat.scalarMul(-1);
         matrix out_mat = *(this) + neg_mat;
-        ;
         free(neg_mat.data);
         return out_mat;
     }
@@ -117,3 +116,4 @@ struct matrix {
         }
     }
 };
+

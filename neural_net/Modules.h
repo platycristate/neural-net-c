@@ -57,7 +57,6 @@ struct SoftMax {
             }
         }
         matrix grad_output_input = grad_output * D;
-        ;
         free(D.data);
         return grad_output_input;
 
@@ -89,6 +88,7 @@ struct Sigmoid {
                 *grad_output_input.get_ptr(row, col) = value;
             }
         }
+        free(output_t.data);
         return grad_output_input;
     }
 };
@@ -103,6 +103,7 @@ struct ReLU {
                     *output.get_ptr(i, j) = value;
             }
         }
+        free(input.data);
         return output;
     }
 
@@ -126,7 +127,7 @@ struct ReLU {
 struct LinearLayer {
     unsigned int n_neurons;
     unsigned int n_links;
-    matrix weight{1, 1 };
+    matrix weight{1, 1};
     matrix bias{1, 1 };
     matrix input_vec{1, 1 };
     matrix grad_weight{1, 1 };
@@ -136,11 +137,17 @@ struct LinearLayer {
     LinearLayer(unsigned int n_neurons_, unsigned int n_links_) {
         n_neurons = n_neurons_;
         n_links = n_links_;
+        free(weight.data);
         weight.resize(n_neurons, n_links);
+        free(input_vec.data);
         input_vec.resize(n_links, 1);
+        free(bias.data);
         bias.resize(n_neurons, 1);
+        free(grad_weight.data);
         grad_weight.resize(n_neurons, n_links);
+        free(grad_bias.data);
         grad_bias.resize(n_neurons, 1);
+        free(grad_input.data);
         grad_input.resize(1, n_links);
         normal_initialization();
     }
@@ -176,3 +183,4 @@ struct LinearLayer {
     }
 
 };
+
