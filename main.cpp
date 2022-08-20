@@ -15,22 +15,16 @@ int training_step(Network &net,
     matrix pred = net.forward(input);
     matrix loss = CrossEntropyLoss::forward(pred, target);
 
-    std::cout << "__------------------------------------------------_________________\n" ;
     // Backward part
     matrix grad_output = CrossEntropyLoss::backward(pred, target, loss);
-    std::cout << "#####################################################################################\n";
     net.backward(grad_output);
-    std::cout << "-------------------------------------------------------------------------\n";
     // Gradient descent
     opt.gradient_step();
     int predicted_label = extract_label(pred);
 
-    ////std::cout \<< "DESTRUCTOR" << std::endl;
-//    free(pred.data);
-    //std::cout \<< "DESTRUCTOR" << std::endl;
-//    free(grad_output.data);
-    ////std::cout \<< "DESTRUCTOR" << std::endl;
-//    free(loss.data);
+    free(pred.data);
+    free(grad_output.data);
+    free(loss.data);
     return predicted_label;
 }
 
@@ -53,9 +47,8 @@ int main() {
     Optimizer opt(net, 1e-4);
     double num_of_examples = 1000;
     int target_label, index;
-    int n_epochs = 6;
+    int n_epochs = 20;
 
-    std::cout << "--------------------------------------------------" << std::endl;
     for (int epoch=0; epoch < n_epochs; epoch++) {
         double correctly_classified = 0;
         for (int step=1; step < num_of_examples; step++) {

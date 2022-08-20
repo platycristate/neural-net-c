@@ -57,7 +57,7 @@ struct SoftMax {
             }
         }
         matrix grad_output_input = grad_output * D;
-        std::cout << "DESTRUCTOR" << std::endl;
+        ;
         free(D.data);
         return grad_output_input;
 
@@ -150,7 +150,6 @@ struct LinearLayer {
         assert(input.n_cols == 1);
         matrix res1 = weight * input;
         matrix res2 = res1 + bias;
-        std::cout << "DESTRUCTOR" << std::endl;
         free(res1.data);
         return res2;
     }

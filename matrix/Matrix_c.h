@@ -11,20 +11,17 @@ struct matrix {
     matrix(double * data_,
            unsigned int n_rows_,
            unsigned int n_cols_) {
-        std::cout << "Constructor" << std::endl;
         data = data_;
         n_rows = n_rows_;
         n_cols = n_cols_;
     }
     matrix (unsigned int n_rows_, unsigned int n_cols_) {
-        std::cout << "Constructor" << std::endl;
         n_rows = n_rows_;
         n_cols = n_cols_;
         data = (double*) calloc(n_rows * n_cols, sizeof(double));
     }
     matrix (unsigned int n_rows_, unsigned int n_cols_,
             double value) {
-        std::cout << "Constructor" << std::endl;
         n_rows = n_rows_;
         n_cols = n_cols_;
         data = (double*) calloc(n_rows * n_cols, sizeof(double));
@@ -80,7 +77,10 @@ struct matrix {
     }
     matrix operator - (matrix const &mat) const {
         assert(mat.n_cols == n_cols && mat.n_rows == n_rows);
-        matrix out_mat = *(this) + mat.scalarMul(-1);
+        matrix neg_mat = mat.scalarMul(-1);
+        matrix out_mat = *(this) + neg_mat;
+        ;
+        free(neg_mat.data);
         return out_mat;
     }
     double get(int const i, int const j) const {
@@ -107,7 +107,7 @@ struct matrix {
         n_cols = n_cols_;
     }
     void shape() const {
-        //std::cout \<< "(" << n_rows << ", " << n_cols << ")\n";
+        std::cout << "(" << n_rows << ", " << n_cols << ")\n";
     }
     void print() const {
         for (int row=0; row < n_rows; row++) {
