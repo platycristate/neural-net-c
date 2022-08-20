@@ -150,6 +150,8 @@ struct LinearLayer {
         assert(input.n_cols == 1);
         matrix res1 = weight * input;
         matrix res2 = res1 + bias;
+        std::cout << "DESTRUCTOR" << std::endl;
+        free(res1.data);
         return res2;
     }
     void backward(matrix &grad_output) {

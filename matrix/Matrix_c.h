@@ -11,20 +11,20 @@ struct matrix {
     matrix(double * data_,
            unsigned int n_rows_,
            unsigned int n_cols_) {
-        //std::cout \<< "Constructor" << std::endl;
+        std::cout << "Constructor" << std::endl;
         data = data_;
         n_rows = n_rows_;
         n_cols = n_cols_;
     }
     matrix (unsigned int n_rows_, unsigned int n_cols_) {
-        //std::cout \<< "Constructor" << std::endl;
+        std::cout << "Constructor" << std::endl;
         n_rows = n_rows_;
         n_cols = n_cols_;
         data = (double*) calloc(n_rows * n_cols, sizeof(double));
     }
     matrix (unsigned int n_rows_, unsigned int n_cols_,
             double value) {
-        //std::cout \<< "Constructor" << std::endl;
+        std::cout << "Constructor" << std::endl;
         n_rows = n_rows_;
         n_cols = n_cols_;
         data = (double*) calloc(n_rows * n_cols, sizeof(double));

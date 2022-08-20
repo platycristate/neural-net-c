@@ -53,9 +53,9 @@ int main() {
     Optimizer opt(net, 1e-4);
     double num_of_examples = 1000;
     int target_label, index;
-    int n_epochs = 5;
+    int n_epochs = 3;
 
-    //std::cout \<< "--------------------------------------------------" << std::endl;
+    std::cout << "--------------------------------------------------" << std::endl;
     for (int epoch=0; epoch < n_epochs; epoch++) {
         double correctly_classified = 0;
         for (int step=1; step < num_of_examples; step++) {
