@@ -42,7 +42,7 @@ void readData(){
 }
 
 void Test(){
-    std::cout << "Testing addition" << std::endl;
+    //std::cout \<< "Testing addition" << std::endl;
     std::vector<std::vector<double>> data = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
     std::vector<std::vector<double>> data2 = {{1, 1, 1}, {1, 1, 1}, {1, 1, 1}};
     std::vector<std::vector<double>> data_cor = {{2, 3, 4}, {5, 6, 7}, {8, 9, 10}};
@@ -64,9 +64,9 @@ void Test(){
     Matrix mat4(data4), mat5(data5), res_cor2(data_cor2);
     Matrix res2 = mat4 + mat5;
     assert(compareMatrices(res2, res_cor2) == true);
-    std::cout << "Finished addition" << std::endl;
+    //std::cout \<< "Finished addition" << std::endl;
 
-    std::cout << "Testing transpositions" << std::endl;
+    //std::cout \<< "Testing transpositions" << std::endl;
     std::vector<std::vector<double>> data6 = {{1}};
     Matrix mat6(data6);
     Matrix mat7 = mat6.transpose();
@@ -94,5 +94,5 @@ void Test(){
     Matrix mat12 = mat11.scalarMul(f);
     mat12.printArray();
 
-    std::cout << "Finished Testing" << std::endl;
+    //std::cout \<< "Finished Testing" << std::endl;
 }

@@ -5,7 +5,6 @@
 #include <random>
 #include <cassert>
 #include <cmath>
-//#include <Matrix.h>
 #include <Matrix_c.h>
 
 std::random_device rd{};
@@ -149,26 +148,21 @@ struct LinearLayer {
         input_vec = input;
         assert(input.n_rows == weight.n_cols);
         assert(input.n_cols == 1);
-        matrix res = weight * input;
-        res = res + bias;
-        return res;
+        matrix res1 = weight * input;
+        matrix res2 = res1 + bias;
+        return res2;
     }
     void backward(matrix &grad_output) {
         assert(grad_output.n_rows == 1 && grad_output.n_cols == weight.n_rows);
-        matrix grad_output_input = grad_output * weight;
-        matrix grad_output_weight(weight.n_rows, weight.n_cols);
-        matrix grad_output_bias(bias.n_rows, bias.n_cols );
+        grad_input = grad_output * weight;
         double grad_w_row_col;
         for (int row=0; row < weight.n_rows; row++) {
-            *grad_output_bias.get_ptr(row, 0) = grad_output.get(0, row);
+            *grad_bias.get_ptr(row, 0) = grad_output.get(0, row);
             for (int col=0; col < weight.n_cols; col++) {
                 grad_w_row_col = input_vec.get(col, 0) * grad_output.get(0, row);
-                *grad_output_weight.get_ptr(row, col) = grad_w_row_col;
+                *grad_weight.get_ptr(row, col) = grad_w_row_col;
             }
         }
-        grad_weight = grad_output_weight;
-        grad_bias = grad_output_bias;
-        grad_input = grad_output_input;
     }
     void normal_initialization() const {
         generator.seed(259);

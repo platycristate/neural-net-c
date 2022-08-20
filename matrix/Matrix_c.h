@@ -4,27 +4,30 @@
 
 
 struct matrix {
+    unsigned int n_rows = 1;
+    unsigned int n_cols = 1;
     double * data;
-    unsigned int n_rows;
-    unsigned int n_cols;
 
     matrix(double * data_,
            unsigned int n_rows_,
            unsigned int n_cols_) {
+        //std::cout \<< "Constructor" << std::endl;
         data = data_;
         n_rows = n_rows_;
         n_cols = n_cols_;
     }
     matrix (unsigned int n_rows_, unsigned int n_cols_) {
+        //std::cout \<< "Constructor" << std::endl;
         n_rows = n_rows_;
         n_cols = n_cols_;
-        data = (double*)malloc(sizeof(double) * n_rows * n_cols);
+        data = (double*) calloc(n_rows * n_cols, sizeof(double));
     }
     matrix (unsigned int n_rows_, unsigned int n_cols_,
             double value) {
+        //std::cout \<< "Constructor" << std::endl;
         n_rows = n_rows_;
         n_cols = n_cols_;
-        data = (double*)malloc(sizeof(double) * n_rows * n_cols);
+        data = (double*) calloc(n_rows * n_cols, sizeof(double));
         for (int row=0; row < n_rows; row++) {
             for (int col=0; col < n_cols; col++)
                 *(data + row*n_cols + col) = value;
@@ -32,7 +35,7 @@ struct matrix {
     }
     matrix operator * (matrix const &mat) const {
         assert(n_cols == mat.n_rows);
-        double * out = (double *) malloc(sizeof(double) * n_rows * mat.n_cols);
+        double * out = (double *) calloc(n_rows * mat.n_cols, sizeof(double));
         for (int row=0; row < n_rows; row++) {
             for (int col=0; col < mat.n_cols; col++) {
                 double value = 0;
@@ -46,7 +49,7 @@ struct matrix {
         return out_mat;
     }
     matrix scalarMul(double const f) const {
-        double * out = (double *) malloc(sizeof(double) * n_rows * n_cols);
+        double * out = (double *) calloc(n_rows * n_cols, sizeof(double));
         for (int row=0; row < n_rows; row++) {
             for (int col=0; col < n_cols; col++)
                 *(out + row*n_cols + col) = f * *(data + row*n_cols + col);
@@ -56,7 +59,7 @@ struct matrix {
     }
     matrix operator ^ (matrix const &mat) const {
         assert(n_rows == mat.n_rows && n_cols == mat.n_cols);
-        double * out = (double *) malloc(sizeof(double) * n_rows * n_cols);
+        double * out = (double *) calloc(n_rows * n_cols, sizeof(double));
         for (int row=0; row < n_rows; row++) {
             for (int col=0; col < n_cols; col++)
                 *(out + row*n_cols + col) = *(data + row*n_cols + col) * *(mat.data + row*n_cols + col);
@@ -66,13 +69,13 @@ struct matrix {
     }
     matrix operator + (matrix const &mat) const {
         assert(mat.n_cols == n_cols && mat.n_rows == n_rows);
-        double * out = (double *) malloc(sizeof(double) * n_rows * n_cols);
+        double * out = (double *) calloc(n_rows * n_cols, sizeof(double));
         for (int row=0; row < n_rows; row++) {
             for (int col=0; col < n_cols; col++)
                 *(out + row*n_cols + col) =
                 *(data + row*n_cols + col) + *(mat.data + row*n_cols + col);
         }
-        static matrix out_mat(out, n_rows, n_cols);
+        matrix out_mat(out, n_rows, n_cols);
         return out_mat;
     }
     matrix operator - (matrix const &mat) const {
@@ -89,10 +92,9 @@ struct matrix {
         return data + n_cols*i + j;
     }
     matrix transpose() const {
-        double * out = (double *) malloc(sizeof(double) * n_rows * n_cols);
+        double * out = (double *) calloc(n_rows * n_cols, sizeof(double));
         for (int row=0; row < n_rows; row++) {
             for (int col=0; col < n_cols; col++) {
-                *(out + row*n_rows + col) = *(data + col*n_cols + row);
                 *(out + col*n_rows + row) = *(data + row*n_cols + col);
             }
         }
@@ -100,12 +102,12 @@ struct matrix {
         return out_mat;
     }
     void resize(int n_rows_, unsigned int n_cols_) {
-        data = (double *) malloc(sizeof(double) * n_rows_ * n_cols_);
+        data = (double *) calloc(n_rows_ * n_cols_, sizeof(double));
         n_rows = n_rows_;
         n_cols = n_cols_;
     }
     void shape() const {
-        std::cout << "(" << n_rows << ", " << n_cols << ")\n";
+        //std::cout \<< "(" << n_rows << ", " << n_cols << ")\n";
     }
     void print() const {
         for (int row=0; row < n_rows; row++) {

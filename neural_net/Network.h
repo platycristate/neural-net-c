@@ -21,7 +21,7 @@ struct Network {
             std::cout << "Layer " << i << ": " <<
             dims[i][0] << ", " << dims[i][1] << std::endl;
     }
-    matrix forward(matrix &input) {
+    matrix forward(matrix &input) const {
         matrix x = layers[0].forward(input);
         for (int i=1; i < dims.size(); i++) {
             x = ReLU::forward(x);

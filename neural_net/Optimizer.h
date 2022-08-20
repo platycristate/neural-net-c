@@ -1,7 +1,6 @@
 #pragma once
 #include <iostream>
 #include <vector>
-//#include <Matrix.h>
 #include <Matrix_c.h>
 #include <Network.h>
 
