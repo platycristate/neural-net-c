@@ -44,8 +44,6 @@ struct SoftMax {
 
     static matrix backward(const matrix &grad_output, const matrix &output) {
         assert(output.n_rows == grad_output.n_cols && output.n_cols == 1 && grad_output.n_rows == 1);
-        matrix grad_output_input(grad_output.n_rows,
-                                 grad_output.n_cols);
         int n_elements = grad_output.n_cols;
         matrix D(grad_output.n_cols, grad_output.n_cols);
         for (int row=0; row < n_elements; row++) {
@@ -57,8 +55,10 @@ struct SoftMax {
                     *D.get_ptr(row, col) = -output.get(row,0) * output.get(col, 0);
                 }
             }
-            grad_output_input = grad_output * D;
         }
+        matrix grad_output_input = grad_output * D;
+        std::cout << "DESTRUCTOR" << std::endl;
+        free(D.data);
         return grad_output_input;
 
     }
