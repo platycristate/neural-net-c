@@ -32,10 +32,15 @@ struct Network {
     void backward(matrix &grad_output) {
         for (unsigned int l=dims.size()-1; l >= 1; l--) {
             layers[l].backward(grad_output);
-            grad_output = layers[l].grad_input;
-            grad_output = ReLU::backward(grad_output, layers[l].input_vec);
+            grad_output = ReLU::backward(layers[l].grad_input, layers[l].input_vec);
+            std::cout << "DESTRUCTOR" << std::endl;
+            free(layers[l].grad_input.data);
+            std::cout << "DESTRUCTOR" << std::endl;
+            free(layers[l].input_vec.data);
         }
         layers[0].backward(grad_output);
+        std::cout << "DESTRUCTOR" << std::endl;
+        free(grad_output.data);
         grad_output = layers[0].grad_input;
     }
 };

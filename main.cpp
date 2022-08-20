@@ -20,7 +20,7 @@ int training_step(Network &net,
     matrix grad_output = CrossEntropyLoss::backward(pred, target, loss);
     std::cout << "#####################################################################################\n";
     net.backward(grad_output);
-    //std::cout \<< "-------------------------------------------------------------------------\n";
+    std::cout << "-------------------------------------------------------------------------\n";
     // Gradient descent
     opt.gradient_step();
     int predicted_label = extract_label(pred);
@@ -53,7 +53,7 @@ int main() {
     Optimizer opt(net, 1e-4);
     double num_of_examples = 1000;
     int target_label, index;
-    int n_epochs = 4;
+    int n_epochs = 6;
 
     std::cout << "--------------------------------------------------" << std::endl;
     for (int epoch=0; epoch < n_epochs; epoch++) {
